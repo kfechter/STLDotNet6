@@ -15,8 +15,8 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that both string and binary STL files can be read by the STLDocument.Read method.")]
         public void FromStringAndBinary()
         {
-            STLDocument stlString = null;
-            STLDocument stlBinary = null;
+            STLDocument? stlString = null;
+            STLDocument? stlBinary = null;
 
             using (Stream stream = GetData("ASCII.stl"))
             {
@@ -37,7 +37,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that reading text-based STLs works correctly.")]
         public void FromText()
         {
-            STLDocument stl = null;
+            STLDocument? stl = null;
 
             using (Stream stream = GetData("ASCII.stl"))
             {
@@ -54,7 +54,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that reading binary-based STLs works correctly.")]
         public void FromBinary()
         {
-            STLDocument stl = null;
+            STLDocument? stl = null;
 
             using (Stream stream = GetData("Binary.stl"))
             {
@@ -73,8 +73,8 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that reading STLs from a string works correctly.")]
         public void FromString()
         {
-            string stlText = null;
-            STLDocument stl = null;
+            string? stlText = null;
+            STLDocument? stl = null;
 
             using (Stream stream = GetData("ASCII.stl"))
             using (StreamReader reader = new StreamReader(stream))
@@ -89,7 +89,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that reading STLs from a file works correctly.")]
         public void FromFile()
         {
-            STLDocument stl = null;
+            STLDocument? stl = null;
 
             using (Stream inStream = GetData("ASCII.stl"))
             {
@@ -125,11 +125,11 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                     new Vertex(-10.123f, 0, 0)
                 }, 0)
             });
-            STLDocument stl2 = null;
-            byte[] stl1Data = null;
-            string stl1String = null;
-            byte[] stl2Data = null;
-            string stl2String = null;
+            STLDocument? stl2 = null;
+            byte[]? stl1Data = null;
+            string? stl1String = null;
+            byte[]? stl2Data = null;
+            string? stl2String = null;
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -162,9 +162,9 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                     new Vertex(-10, 0, 0)
                 }, 0)
             });
-            STLDocument stl2 = null;
-            byte[] stl1Data = null;
-            byte[] stl2Data = null;
+            STLDocument? stl2 = null;
+            byte[]? stl1Data = null;
+            byte[]? stl2Data = null;
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -186,10 +186,10 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that copying an STL document as text works correctly.")]
         public void CopyAsText()
         {
-            STLDocument stlStringFrom = null;
-            STLDocument stlStringTo = null;
-            STLDocument stlBinaryFrom = null;
-            STLDocument stlBinaryTo = null;
+            STLDocument? stlStringFrom = null;
+            STLDocument? stlStringTo = null;
+            STLDocument? stlBinaryFrom = null;
+            STLDocument? stlBinaryTo = null;
 
             using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
             {
@@ -216,10 +216,10 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that copying an STL document as binary works correctly.")]
         public void CopyAsBinary()
         {
-            STLDocument stlStringFrom = null;
-            STLDocument stlStringTo = null;
-            STLDocument stlBinaryFrom = null;
-            STLDocument stlBinaryTo = null;
+            STLDocument? stlStringFrom = null;
+            STLDocument? stlStringTo = null;
+            STLDocument? stlBinaryFrom = null;
+            STLDocument? stlBinaryTo = null;
 
             using (Stream inStream = GetData("ASCII.stl"), outStream = new MemoryStream())
             {
@@ -246,7 +246,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that the stream is left open after reading a text-based STL.")]
         public void StreamLeftOpen()
         {
-            STLDocument stl = null;
+            STLDocument? stl = null;
 
             using (Stream stream = GetData("ASCII.stl"))
             {
@@ -287,8 +287,8 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that facet appending functions correctly.")]
         public void AppendFacets()
         {
-            STLDocument stl1 = null;
-            STLDocument stl2 = null;
+            STLDocument? stl1 = null;
+            STLDocument? stl2 = null;
             int facetCount = 0;
 
             using (Stream stream = GetData("ASCII.stl"))
@@ -310,9 +310,9 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that saving to a file functions correctly.")]
         public void SaveToFile()
         {
-            STLDocument stl = null;
-            STLDocument stlText = null;
-            STLDocument stlBinary = null;
+            STLDocument? stl = null;
+            STLDocument? stlText = null;
+            STLDocument? stlBinary = null;
             string stlTextPath = Path.GetTempFileName();
             string stlBinaryPath = Path.GetTempFileName();
 
@@ -338,8 +338,8 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that facet (vertex) shifting functions correctly.")]
         public void ShiftFacets()
         {
-            STLDocument stl1 = null;
-            STLDocument stl2 = null;
+            STLDocument? stl1 = null;
+            STLDocument? stl2 = null;
             Vertex shift = new Vertex(100, -100, 50);
 
             using (Stream stream = GetData("ASCII.stl"))
@@ -365,8 +365,8 @@ namespace STLDotNet6.Formats.StereoLithography.Test
         [Description("Ensures that facet (normal) inversion functions correctly.")]
         public void InvertFacets()
         {
-            STLDocument stl1 = null;
-            STLDocument stl2 = null;
+            STLDocument? stl1 = null;
+            STLDocument? stl2 = null;
 
             using (Stream stream = GetData("ASCII.stl"))
             {

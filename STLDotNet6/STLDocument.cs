@@ -15,7 +15,7 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>The name of the solid.</summary>
         /// <remarks>This property is not used for binary STLs.</remarks>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>The density of the solid.</summary>
         public double Density => 1.04;
@@ -149,7 +149,7 @@ namespace STLDotNet6.Formats.StereoLithography
             const string solid = "solid";
 
             byte[] buffer = new byte[5];
-            string header = null;
+            string? header = null;
 
             //Reset the stream to tbe beginning and read the first few bytes, then reset the stream to the beginning again.
             stream.Seek(0, SeekOrigin.Begin);
@@ -180,7 +180,7 @@ namespace STLDotNet6.Formats.StereoLithography
         {
             //Determine if the stream contains a text-based or binary-based <see cref="STLDocument"/>, and then read it.
             var isText = IsText(stream);
-            STLDocument textStlDocument = null;
+            STLDocument? textStlDocument = null;
             if (isText)
             {
                 using (StreamReader reader = new StreamReader(stream, Encoding.ASCII, true, DefaultBufferSize, true))
@@ -214,10 +214,10 @@ namespace STLDotNet6.Formats.StereoLithography
                 return null;
 
             //Read the header.
-            string header = reader.ReadLine();
+            string? header = reader.ReadLine();
             Match headerMatch = Regex.Match(header, regexSolid);
-            STLDocument stl = null;
-            Facet currentFacet = null;
+            STLDocument? stl = null;
+            Facet? currentFacet = null;
 
             //Check the header.
             if (!headerMatch.Success)
@@ -270,8 +270,8 @@ namespace STLDotNet6.Formats.StereoLithography
                 return null;
 
             byte[] buffer = new byte[80];
-            STLDocument stl = new STLDocument();
-            Facet currentFacet = null;
+            STLDocument? stl = new STLDocument();
+            Facet? currentFacet = null;
 
             //Read (and ignore) the header and number of triangles.
             buffer = reader.ReadBytes(80);
