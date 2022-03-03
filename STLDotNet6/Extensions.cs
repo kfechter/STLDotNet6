@@ -11,7 +11,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <param name="x">The amount to shift the vertices along the X axis.</param>
         /// <param name="y">The amount to shift the vertices along the Y axis.</param>
         /// <param name="z">The amount to shift the vertices along the Z axis.</param>
-        public static void Shift(this IEnumerable<Facet> facets, float x, float y, float z)
+        public static void Shift(this IEnumerable<Facet?> facets, float x, float y, float z)
         {
             facets.Shift(new Vertex(x, y, z));
         }
@@ -19,9 +19,9 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Shifts the vertices within the <paramref name="facets"/> enumerable by the X, Y and Z values in the <paramref name="shift"/> parameter.</summary>
         /// <param name="facets">The vertices to be shifted.</param>
         /// <param name="shift">The amount to shift each vertex.</param>
-        public static void Shift(this IEnumerable<Facet> facets, Vertex shift)
+        public static void Shift(this IEnumerable<Facet?> facets, Vertex? shift)
         {
-            facets.ForEach(f => f.Shift(shift));
+            facets.ForEach(f => f!.Shift(shift!));
         }
 
         /// <summary>Shifts the <paramref name="vertices"/> enumerable by <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/>.</summary>
@@ -37,16 +37,16 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Shifts the <paramref name="vertices"/> enumerable by the X, Y and Z values in the <paramref name="shift"/> parameter.</summary>
         /// <param name="vertices">The vertices to be shifted.</param>
         /// <param name="shift">The amount to shift each vertex.</param>
-        public static void Shift(this IEnumerable<Vertex> vertices, Vertex shift)
+        public static void Shift(this IEnumerable<Vertex?> vertices, Vertex? shift)
         {
-            vertices.ForEach(v => v.Shift(shift));
+            vertices.ForEach(v => v!.Shift(shift!));
         }
 
         /// <summary>Inverts the <see cref="Normal"/> within the <paramref name="facets"/> enumerable.</summary>
         /// <param name="facets">The facets to invert.</param>
-        public static void Invert(this IEnumerable<Facet> facets)
+        public static void Invert(this IEnumerable<Facet?> facets)
         {
-            facets.ForEach(f => f.Normal.Invert());
+            facets.ForEach(f => f!.Normal!.Invert());
         }
 
         /// <summary>Iterates the provided enumerable, applying the provided action to each element.</summary>
