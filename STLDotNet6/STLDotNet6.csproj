@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageProjectUrl>https://github.com/kfechter/STLDotNet6</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kfechter/STLDotNet6</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>STL, Stereo Lithography</PackageTags>
+    <PackageId>$(AssemblyName).Formats.StereoLithography</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Projects\STLDotNet6\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
