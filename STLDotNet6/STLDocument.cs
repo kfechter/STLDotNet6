@@ -20,6 +20,28 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>The list of <see cref="Facet"/>s within this solid.</summary>
         public IList<Facet> Facets { get; set; }
 
+        public double Volume 
+        {
+            get
+            {
+                var volume = 0d;
+                foreach(var facet in Facets)
+                {
+                    var v321 = facet.Vertices[2].X * facet.Vertices[1].Y * facet.Vertices[0].Z;
+                    var v231 = facet.Vertices[1].X * facet.Vertices[2].Y * facet.Vertices[0].Z;
+                    var v312 = facet.Vertices[2].X * facet.Vertices[0].Y * facet.Vertices[1].Z;
+                    var v132 = facet.Vertices[0].X * facet.Vertices[2].Y * facet.Vertices[1].Z;
+                    var v213 = facet.Vertices[1].X * facet.Vertices[0].Y * facet.Vertices[2].Z;
+                    var v123 = facet.Vertices[0].X * facet.Vertices[1].Y * facet.Vertices[2].Z;
+
+                    var facetVolume = (1.0 / 6.0) * (-v321 + v231 + v312 - v132 - v213 + v123);
+                    volume += facetVolume;
+                }
+
+                return Math.Abs(volume) / 1000;
+            } 
+        }
+
         /// <summary>Creates a new, empty <see cref="STLDocument"/>.</summary>
         public STLDocument()
         {
