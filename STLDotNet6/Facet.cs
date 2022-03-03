@@ -15,9 +15,6 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Indicates the location of the <see cref="Facet"/>.</summary>
         public IList<Vertex> Vertices { get; set; }
 
-
-
-
         /// <summary>Additional data attached to the facet.</summary>
         /// <remarks>Depending on the source of the STL, this could be used to indicate such things as the color of the <see cref="Facet"/>. This functionality only exists in binary STLs.</remarks>
         public UInt16 AttributeByteCount { get; set; }

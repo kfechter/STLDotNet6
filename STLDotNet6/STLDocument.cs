@@ -17,13 +17,16 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <remarks>This property is not used for binary STLs.</remarks>
         public string Name { get; set; }
 
+        /// <summary>The density of the solid.</summary>
         public double Density => 1.04;
 
+        /// <summary>The weight of the solid.</summary>
         public double Weight => this.Density * this.Volume;
 
         /// <summary>The list of <see cref="Facet"/>s within this solid.</summary>
         public IList<Facet> Facets { get; set; }
 
+        /// <summary>The volume of the solid.</summary>
         public double Volume 
         {
             get
