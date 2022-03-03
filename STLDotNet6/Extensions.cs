@@ -93,27 +93,5 @@ namespace STLDotNet6.Formats.StereoLithography
         {
             return string.IsNullOrEmpty(value);
         }
-
-        /// <summary>Interpolates the provided formatted string with the provided args using the default culture.</summary>
-        /// <param name="format">The formatted string.</param>
-        /// <param name="args">The values to use for interpolation.</param>
-        public static string Interpolate(this string format, params object[] args)
-        {
-            return format.Interpolate(CultureInfo.InvariantCulture, args);
-        }
-
-        /// <summary>Interpolates the provided formatted string with the provided args.</summary>
-        /// <param name="format">The formatted string.</param>
-        /// <param name="culture">The culture info to use.</param>
-        /// <param name="args">The values to use for interpolation.</param>
-        public static string Interpolate(this string format, CultureInfo culture, params object[] args)
-        {
-            if (format != null)
-            {
-                return string.Format(culture, format, args);
-            }
-
-            return null;
-        }
     }
 }

@@ -52,7 +52,7 @@ namespace STLDotNet6.Formats.StereoLithography
                 this.Facets.ForEach(o => o.Write(writer));
 
                 //Write the footer.
-                writer.Write("end{0}".Interpolate(this.ToString()));
+                writer.Write($"end{this}");
             }
         }
 
@@ -192,7 +192,7 @@ namespace STLDotNet6.Formats.StereoLithography
 
             //Check the header.
             if (!headerMatch.Success)
-                throw new FormatException("Invalid STL header, expected \"solid [name]\" but found \"{0}\".".Interpolate(header));
+                throw new FormatException($"Invalid STL header, expected \"solid [name]\" but found \"{header}\".");
 
             //Create the STL and extract the name (optional).
             stl = new STLDocument()
@@ -284,7 +284,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Returns the header representation of this <see cref="STLDocument"/>.</summary>
         public override string ToString()
         {
-            return "solid {0}".Interpolate(this.Name);
+            return $"solid {this.Name}";
         }
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>

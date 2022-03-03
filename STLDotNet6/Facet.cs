@@ -69,7 +69,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Returns the string representation of this <see cref="Facet"/>.</summary>
         public override string ToString()
         {
-            return "facet {0}".Interpolate(this.Normal);
+            return $"facet {this.Normal}";
         }
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>

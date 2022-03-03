@@ -48,7 +48,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <param name="writer">The writer to which the <see cref="Vertex"/> will be written at the current position.</param>
         public void Write(StreamWriter writer)
         {
-            writer.WriteLine("\t\t\t{0}".Interpolate(this.ToString()));
+            writer.WriteLine($"\t\t\t{this}");
         }
 
         /// <summary>Writes the <see cref="Vertex"/> as binary to the <paramref name="writer"/>.</summary>
@@ -104,13 +104,13 @@ namespace STLDotNet6.Formats.StereoLithography
 
             //Parse the three coordinates.
             if (!float.TryParse(match.Groups["X"].Value, numberStyle, CultureInfo.InvariantCulture, out x))
-                throw new FormatException("Could not parse X coordinate \"{0}\" as a decimal.".Interpolate(match.Groups["X"]));
+                throw new FormatException($"Could not parse X coordinate \"{match.Groups["X"]}\" as a decimal.");
 
             if (!float.TryParse(match.Groups["Y"].Value, numberStyle, CultureInfo.InvariantCulture, out y))
-                throw new FormatException("Could not parse Y coordinate \"{0}\" as a decimal.".Interpolate(match.Groups["Y"]));
+                throw new FormatException($"Could not parse Y coordinate \"{match.Groups["Y"]}\" as a decimal.");
 
             if (!float.TryParse(match.Groups["Z"].Value, numberStyle, CultureInfo.InvariantCulture, out z))
-                throw new FormatException("Could not parse Z coordinate \"{0}\" as a decimal.".Interpolate(match.Groups["Z"]));
+                throw new FormatException($"Could not parse Z coordinate \"{match.Groups["Z"]}\" as a decimal.");
 
             return new Vertex()
             {
@@ -138,7 +138,7 @@ namespace STLDotNet6.Formats.StereoLithography
             if (bytesRead == 0)
                 return null;
             else if (bytesRead != data.Length)
-                throw new FormatException("Could not convert the binary data to a vertex. Expected {0} bytes but found {1}.".Interpolate(vertexSize, bytesRead));
+                throw new FormatException($"Could not convert the binary data to a vertex. Expected {vertexSize} bytes but found {bytesRead}.");
 
             //Convert the read bytes to their numeric representation.
             return new Vertex()
