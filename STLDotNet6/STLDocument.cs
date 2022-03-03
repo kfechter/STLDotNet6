@@ -34,12 +34,12 @@ namespace STLDotNet6.Formats.StereoLithography
                 var volume = 0d;
                 foreach(var facet in Facets)
                 {
-                    var v321 = facet.Vertices[2].X * facet.Vertices[1].Y * facet.Vertices[0].Z;
-                    var v231 = facet.Vertices[1].X * facet.Vertices[2].Y * facet.Vertices[0].Z;
-                    var v312 = facet.Vertices[2].X * facet.Vertices[0].Y * facet.Vertices[1].Z;
-                    var v132 = facet.Vertices[0].X * facet.Vertices[2].Y * facet.Vertices[1].Z;
-                    var v213 = facet.Vertices[1].X * facet.Vertices[0].Y * facet.Vertices[2].Z;
-                    var v123 = facet.Vertices[0].X * facet.Vertices[1].Y * facet.Vertices[2].Z;
+                    var v321 = facet!.Vertices[2]!.X * facet!.Vertices[1]!.Y * facet!.Vertices[0]!.Z;
+                    var v231 = facet!.Vertices[1]!.X * facet!.Vertices[2]!.Y * facet!.Vertices[0]!.Z;
+                    var v312 = facet!.Vertices[2]!.X * facet!.Vertices[0]!.Y * facet!.Vertices[1]!.Z;
+                    var v132 = facet!.Vertices[0]!.X * facet!.Vertices[2]!.Y * facet!.Vertices[1]!.Z;
+                    var v213 = facet!.Vertices[1]!.X * facet!.Vertices[0]!.Y * facet!.Vertices[2]!.Z;
+                    var v123 = facet!.Vertices[0]!.X * facet!.Vertices[1]!.Y * facet!.Vertices[2]!.Z;
 
                     var facetVolume = (1.0 / 6.0) * (-v321 + v231 + v312 - v132 - v213 + v123);
                     volume += facetVolume;
@@ -112,7 +112,7 @@ namespace STLDotNet6.Formats.StereoLithography
             if (path.IsNullOrEmpty())
                 throw new ArgumentNullException("path");
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
             using (Stream stream = File.Create(path))
                 WriteText(stream);
@@ -125,7 +125,7 @@ namespace STLDotNet6.Formats.StereoLithography
             if (path.IsNullOrEmpty())
                 throw new ArgumentNullException("path");
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
             using (Stream stream = File.Create(path))
                 WriteBinary(stream);
@@ -176,7 +176,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <param name="stream">The stream which contains the STL data.</param>
         /// <param name="tryBinaryIfTextFailed">Set to true to try read as binary if reading as text results in zero facets</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>
-        public static STLDocument Read(Stream stream, bool tryBinaryIfTextFailed = false)
+        public static STLDocument? Read(Stream stream, bool tryBinaryIfTextFailed = false)
         {
             //Determine if the stream contains a text-based or binary-based <see cref="STLDocument"/>, and then read it.
             var isText = IsText(stream);
@@ -188,7 +188,7 @@ namespace STLDotNet6.Formats.StereoLithography
                     textStlDocument = Read(reader);
                 }
 
-                if (textStlDocument.Facets.Count > 0 || !tryBinaryIfTextFailed) return textStlDocument;
+                if (textStlDocument!.Facets.Count > 0 || !tryBinaryIfTextFailed) return textStlDocument;
                 stream.Seek(0, SeekOrigin.Begin);
             }
 
@@ -198,7 +198,7 @@ namespace STLDotNet6.Formats.StereoLithography
                 var binaryStlDocument = Read(reader);
 
                 //return text reading result if binary reading also failed and tryBinaryIfTextFailed==true
-                return (binaryStlDocument.Facets.Count > 0 || !isText) ? binaryStlDocument : textStlDocument;
+                return (binaryStlDocument!.Facets.Count > 0 || !isText) ? binaryStlDocument : textStlDocument;
             }
         }
 
@@ -206,7 +206,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <remarks>This method expects a text-based STL document to be contained within the <paramref name="reader"/>.</remarks>
         /// <param name="reader">The reader which contains the text-based STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>
-        public static STLDocument Read(StreamReader reader)
+        public static STLDocument? Read(StreamReader reader)
         {
             const string regexSolid = @"solid\s+(?<Name>[^\r\n]+)?";
 
@@ -215,7 +215,7 @@ namespace STLDotNet6.Formats.StereoLithography
 
             //Read the header.
             string? header = reader.ReadLine();
-            Match headerMatch = Regex.Match(header, regexSolid);
+            Match headerMatch = Regex.Match(header!, regexSolid);
             STLDocument? stl = null;
             Facet? currentFacet = null;
 
@@ -239,7 +239,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Reads the STL document contained within the <paramref name="stl"/> parameter into a new <see cref="STLDocument"/>.</summary>
         /// <param name="stl">A string which contains the STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the <paramref name="stl"/> parameter or null if the parameter is empty.</returns>
-        public static STLDocument Read(string stl)
+        public static STLDocument? Read(string stl)
         {
             if (stl.IsNullOrEmpty())
                 return null;
@@ -251,7 +251,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Reads the STL document located at the <paramref name="path"/> into a new <see cref="STLDocument"/>.</summary>
         /// <param name="path">A full path to a file which contains the STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the file located at the <paramref name="path"/> specified or null if the parameter is empty.</returns>
-        public static STLDocument Open(string path)
+        public static STLDocument? Open(string path)
         {
             if (path.IsNullOrEmpty())
                 throw new ArgumentNullException("path");
@@ -264,7 +264,7 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <remarks>This method will expects a binary-based <see cref="STLDocument"/> to be contained within the <paramref name="reader"/>.</remarks>
         /// <param name="reader">The reader which contains the binary-based STL data.</param>
         /// <returns>An <see cref="STLDocument"/> representing the data contained in the stream or null if the stream is empty.</returns>
-        public static STLDocument Read(BinaryReader reader)
+        public static STLDocument? Read(BinaryReader reader)
         {
             if (reader == null)
                 return null;
@@ -290,9 +290,9 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <returns>The <see cref="STLDocument"/> that was copied.</returns>
         public static STLDocument CopyAsText(Stream inStream, Stream outStream)
         {
-            STLDocument stl = Read(inStream);
+            STLDocument? stl = Read(inStream);
 
-            stl.WriteText(outStream);
+            stl!.WriteText(outStream);
 
             return stl;
         }
@@ -303,9 +303,9 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <returns>The <see cref="STLDocument"/> that was copied.</returns>
         public static STLDocument CopyAsBinary(Stream inStream, Stream outStream)
         {
-            STLDocument stl = Read(inStream);
+            STLDocument? stl = Read(inStream);
 
-            stl.WriteBinary(outStream);
+            stl!.WriteBinary(outStream);
 
             return stl;
         }
@@ -319,9 +319,9 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
         /// <param name="other">The <see cref="STLDocument"/> to which to compare.</param>
         /// <returns>True if this instance is equal to the <paramref name="other"/> instance.</returns>
-        public bool Equals(STLDocument other)
+        public bool Equals(STLDocument? other)
         {
-            return (this.Facets.Count == other.Facets.Count
+            return (this.Facets.Count == other!.Facets.Count
                     && this.Facets.All((i, o) => o.Equals(other.Facets[i])));
         }
 

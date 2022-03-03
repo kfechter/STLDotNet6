@@ -23,14 +23,14 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 stlString = STLDocument.Read(stream);
             }
 
-            ValidateSTL(stlString);
+            ValidateSTL(stlString!);
 
             using (Stream stream = GetData("Binary.stl"))
             {
                 stlBinary = STLDocument.Read(stream);
             }
 
-            ValidateSTL(stlBinary);
+            ValidateSTL(stlBinary!);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 }
             }
 
-            ValidateSTL(stl);
+            ValidateSTL(stl!);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 }
             }
 
-            ValidateSTL(stl);
+            ValidateSTL(stl!);
         }
 
         [TestMethod]
@@ -82,7 +82,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
 
             stl = STLDocument.Read(stlText);
 
-            ValidateSTL(stl);
+            ValidateSTL(stl!);
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 catch { /* Ignore. */ }
             }
 
-            ValidateSTL(stl);
+            ValidateSTL(stl!);
         }
 
         [TestMethod]
@@ -145,7 +145,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 stl2String = Encoding.ASCII.GetString(stl2Data);
             }
 
-            Assert.IsTrue(stl1.Equals(stl2));
+            Assert.IsTrue(stl1.Equals(stl2!));
             Assert.AreEqual(stl1String, stl2String);
         }
 
@@ -178,7 +178,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 stl2Data = stream.ToArray();
             }
 
-            Assert.IsTrue(stl1.Equals(stl2));
+            Assert.IsTrue(stl1.Equals(stl2!));
             Assert.IsTrue(stl1Data.SequenceEqual(stl2Data));
         }
 
@@ -275,7 +275,7 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 {
                     using (StreamReader reader = new StreamReader(stream))
                     {
-                        stls[i] = STLDocument.Read(reader);
+                        stls[i] = STLDocument.Read(reader)!;
                     }
                 }
             }
@@ -297,10 +297,10 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 stl2 = STLDocument.Read(stream);
             }
 
-            ValidateSTL(stl1);
-            ValidateSTL(stl2);
+            ValidateSTL(stl1!);
+            ValidateSTL(stl2!);
 
-            facetCount = (stl1.Facets.Count + stl2.Facets.Count);
+            facetCount = (stl1!.Facets.Count + stl2!.Facets.Count);
             stl1.AppendFacets(stl2);
 
             ValidateSTL(stl1, facetCount);
@@ -319,13 +319,13 @@ namespace STLDotNet6.Formats.StereoLithography.Test
             using (Stream stream = GetData("ASCII.stl"))
                 stl = STLDocument.Read(stream);
 
-            stl.SaveAsText(stlTextPath);
+            stl!.SaveAsText(stlTextPath);
             stlText = STLDocument.Open(stlTextPath);
             stl.SaveAsBinary(stlBinaryPath);
             stlBinary = STLDocument.Open(stlBinaryPath);
 
-            ValidateSTL(stlText);
-            ValidateSTL(stlBinary);
+            ValidateSTL(stlText!);
+            ValidateSTL(stlBinary!);
 
             try { File.Delete(stlTextPath); }
             catch { }
@@ -348,15 +348,15 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 stl2 = STLDocument.Read(stream);
             }
 
-            stl2.Facets.Shift(shift);
+            stl2!.Facets.Shift(shift);
 
-            for (int f = 0; f < stl1.Facets.Count; f++)
+            for (int f = 0; f < stl1!.Facets.Count; f++)
             {
                 for (int v = 0; v < stl1.Facets[f].Vertices.Count; v++)
                 {
-                    Assert.AreEqual(stl1.Facets[f].Vertices[v].X, stl2.Facets[f].Vertices[v].X - shift.X);
-                    Assert.AreEqual(stl1.Facets[f].Vertices[v].Y, stl2.Facets[f].Vertices[v].Y - shift.Y);
-                    Assert.AreEqual(stl1.Facets[f].Vertices[v].Z, stl2.Facets[f].Vertices[v].Z - shift.Z);
+                    Assert.AreEqual(stl1!.Facets[f]!.Vertices[v]!.X, stl2!.Facets[f]!.Vertices[v]!.X - shift.X);
+                    Assert.AreEqual(stl1!.Facets[f]!.Vertices[v]!.Y, stl2!.Facets[f]!.Vertices[v]!.Y - shift.Y);
+                    Assert.AreEqual(stl1!.Facets[f]!.Vertices[v]!.Z, stl2!.Facets[f]!.Vertices[v]!.Z - shift.Z);
                 }
             }
         }
@@ -374,15 +374,15 @@ namespace STLDotNet6.Formats.StereoLithography.Test
                 stl2 = STLDocument.Read(stream);
             }
 
-            stl2.Facets.Invert();
+            stl2!.Facets.Invert();
 
-            for (int f = 0; f < stl1.Facets.Count; f++)
+            for (int f = 0; f < stl1!.Facets.Count; f++)
             {
                 for (int v = 0; v < stl1.Facets[f].Vertices.Count; v++)
                 {
-                    Assert.AreEqual(stl1.Facets[f].Normal.X, (stl2.Facets[f].Normal.X * -1));
-                    Assert.AreEqual(stl1.Facets[f].Normal.Y, (stl2.Facets[f].Normal.Y * -1));
-                    Assert.AreEqual(stl1.Facets[f].Normal.Z, (stl2.Facets[f].Normal.Z * -1));
+                    Assert.AreEqual(stl1!.Facets[f].Normal!.X, (stl2!.Facets[f].Normal!.X * -1));
+                    Assert.AreEqual(stl1!.Facets[f].Normal!.Y, (stl2!.Facets[f].Normal!.Y * -1));
+                    Assert.AreEqual(stl1!.Facets[f].Normal!.Z, (stl2!.Facets[f].Normal!.Z * -1));
                 }
             }
         }

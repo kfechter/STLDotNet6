@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace STLDotNet6.Formats.StereoLithography
 {
     /// <summary>A representation of a facet which is defined by its location (<see cref="Vertices"/>) and directionality (<see cref="Normal"/>).</summary>
-    public class Facet : IEquatable<Facet>, IEnumerable<Vertex>
+    public class Facet : IEquatable<Facet?>, IEnumerable<Vertex?>
     {
         /// <summary>Indicates the directionality of the <see cref="Facet"/>.</summary>
-        public Normal Normal { get; set; }
+        public Normal? Normal { get; set; }
 
         /// <summary>Indicates the location of the <see cref="Facet"/>.</summary>
-        public IList<Vertex> Vertices { get; set; }
+        public IList<Vertex?> Vertices { get; set; }
 
         /// <summary>Additional data attached to the facet.</summary>
         /// <remarks>Depending on the source of the STL, this could be used to indicate such things as the color of the <see cref="Facet"/>. This functionality only exists in binary STLs.</remarks>
@@ -22,18 +22,18 @@ namespace STLDotNet6.Formats.StereoLithography
         /// <summary>Creates a new, empty <see cref="Facet"/>.</summary>
         public Facet()
         {
-            this.Vertices = new List<Vertex>();
+            this.Vertices = new List<Vertex?>();
         }
 
         /// <summary>Creates a new <see cref="Facet"/> using the provided parameters.</summary>
         /// <param name="normal">The directionality of the <see cref="Facet"/>.</param>
         /// <param name="vertices">The location of the <see cref="Facet"/>.</param>
         /// <param name="attributeByteCount">Additional data to attach to the <see cref="Facet"/>.</param>
-        public Facet(Normal normal, IEnumerable<Vertex> vertices, UInt16 attributeByteCount)
+        public Facet(Normal normal, IEnumerable<Vertex?> vertices, UInt16 attributeByteCount)
             : this()
         {
             this.Normal = normal;
-            this.Vertices = vertices.ToList();
+            this.Vertices = vertices!.ToList();
             this.AttributeByteCount = attributeByteCount;
         }
 
@@ -46,7 +46,7 @@ namespace STLDotNet6.Formats.StereoLithography
             writer.WriteLine("\t\touter loop");
 
             //Write each vertex.
-            this.Vertices.ForEach(o => o.Write(writer));
+            this.Vertices.ForEach(o => o!.Write(writer));
 
             writer.WriteLine("\t\tendloop");
             writer.WriteLine("\tendfacet");
@@ -57,10 +57,10 @@ namespace STLDotNet6.Formats.StereoLithography
         public void Write(BinaryWriter writer)
         {
             //Write the normal.
-            this.Normal.Write(writer);
+            this.Normal!.Write(writer);
 
             //Write each vertex.
-            this.Vertices.ForEach(o => o.Write(writer));
+            this.Vertices.ForEach(o => o!.Write(writer));
 
             //Write the attribute byte count.
             writer.Write(this.AttributeByteCount);
@@ -74,15 +74,15 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
         /// <param name="other">The <see cref="Facet"/> to which to compare.</param>
-        public bool Equals(Facet other)
+        public bool Equals(Facet? other)
         {
-            return (this.Normal.Equals(other.Normal)
+            return (this.Normal!.Equals(other!.Normal!)
                     && this.Vertices.Count == other.Vertices.Count
-                    && this.Vertices.All((i, o) => o.Equals(other.Vertices[i])));
+                    && this.Vertices.All((i, o) => o!.Equals(other.Vertices[i])));
         }
 
         /// <summary>Iterates through the <see cref="Vertices"/> collection.</summary>
-        public IEnumerator<Vertex> GetEnumerator()
+        public IEnumerator<Vertex?> GetEnumerator()
         {
             return this.Vertices.GetEnumerator();
         }
@@ -95,7 +95,7 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>Reads a single <see cref="Facet"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Facet"/> to be read at the current position</param>
-        public static Facet Read(StreamReader reader)
+        public static Facet? Read(StreamReader reader)
         {
             if (reader == null)
                 return null;
@@ -122,7 +122,7 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>Reads a single <see cref="Facet"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Facet"/> to be read at the current position</param>
-        public static Facet Read(BinaryReader reader)
+        public static Facet? Read(BinaryReader reader)
         {
             if (reader == null)
                 return null;

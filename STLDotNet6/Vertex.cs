@@ -69,23 +69,23 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>Determines whether or not this instance is the same as the <paramref name="other"/> instance.</summary>
         /// <param name="other">The <see cref="Vertex"/> to which to compare.</param>
-        public bool Equals(Vertex other)
+        public bool Equals(Vertex? other)
         {
-            return (this.X.Equals(other.X)
+            return (this.X.Equals(other!.X)
                     && this.Y.Equals(other.Y)
                     && this.Z.Equals(other.Z));
         }
 
         /// <summary>Reads a single <see cref="Vertex"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Vertex"/> to be read at the current position</param>
-        public static Vertex Read(StreamReader reader)
+        public static Vertex? Read(StreamReader reader)
         {
             const string regex = @"\s*(facet normal|vertex)\s+(?<X>[^\s]+)\s+(?<Y>[^\s]+)\s+(?<Z>[^\s]+)";
             const NumberStyles numberStyle = (NumberStyles.AllowExponent | NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign);
 
-            string data = null;
+            string? data = null;
             float x, y, z;
-            Match match = null;
+            Match? match = null;
 
             if (reader == null)
                 return null;
@@ -122,7 +122,7 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>Reads a single <see cref="Vertex"/> from the <paramref name="reader"/>.</summary>
         /// <param name="reader">The reader which contains a <see cref="Vertex"/> to be read at the current position</param>
-        public static Vertex Read(BinaryReader reader)
+        public static Vertex? Read(BinaryReader reader)
         {
             const int floatSize = sizeof(float);
             const int vertexSize = (floatSize * 3);
