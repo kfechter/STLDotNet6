@@ -10,6 +10,10 @@
     <PackageTags>STL, Stereo Lithography</PackageTags>
     <PackageId>$(AssemblyName).Formats.StereoLithography</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Company />
+    <Authors>Kenneth Fechter</Authors>
+    <Description>Package for interpreting and finding information from an STL file. Get Area, CoM, BoundingBoxes, and weight</Description>
+    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
