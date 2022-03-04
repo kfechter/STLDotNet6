@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace STLDotNet6.Formats.StereoLithography
 {
@@ -22,6 +18,27 @@ namespace STLDotNet6.Formats.StereoLithography
 
         /// <summary>The weight of the solid.</summary>
         public double Weight => this.Density * this.Volume;
+
+        /// <summary>The area of the solid.</summary>
+        public double Area
+        {
+            get
+            {
+                var area = 0d;
+
+                foreach(var facet in this.Facets)
+                {
+                    var ab = facet.Vertices[1].Sub(facet.Vertices[0]);
+                    var ac = facet.Vertices[2].Sub(facet.Vertices[0]);
+
+                    var cross = ab.Cross(ac);
+
+                    area += (cross.Length() / 2);
+                }
+
+                return area;
+            }
+        }
 
         /// <summary>The list of <see cref="Facet"/>s within this solid.</summary>
         public IList<Facet> Facets { get; set; }
@@ -47,6 +64,81 @@ namespace STLDotNet6.Formats.StereoLithography
 
                 return Math.Abs(volume) / 1000;
             } 
+        }
+
+        public BoundingBox BoundingBox
+        {
+            get
+            {
+                var minx = 0d;
+                var miny = 0d;
+                var minz = 0d;
+                var maxx = 0d;
+                var maxy = 0d;
+                var maxz = 0d;
+
+                foreach(var facet in this.Facets)
+                {
+                    
+                    var tminx = new[] { facet!.Vertices[0]!.X, facet!.Vertices[1]!.X, facet!.Vertices[2]!.X }.Min();
+                    minx = tminx < minx ? tminx : minx;
+
+
+                    var tmaxx = new[] { facet!.Vertices[0]!.X, facet!.Vertices[1]!.X, facet!.Vertices[2]!.X }.Max();
+                    maxx = tmaxx > maxx ? tmaxx : maxx;
+
+
+                    var tminy = new[] { facet!.Vertices[0]!.Y, facet!.Vertices[1]!.Y, facet!.Vertices[2]!.Y }.Min();
+                    miny = tminy < miny ? tminy : miny;
+
+                    var tmaxy = new[] { facet!.Vertices[0]!.Y, facet!.Vertices[1]!.Y, facet!.Vertices[2]!.Y }.Max();
+                    maxy = tmaxy > maxy ? tmaxy : maxy;
+
+                    var tminz = new[] { facet!.Vertices[0]!.Z, facet!.Vertices[1]!.Z, facet!.Vertices[2]!.Z }.Min();
+                    minz = tminz < minz ? tminz : minz;
+
+                    var tmaxz = new[] { facet!.Vertices[0]!.Z, facet!.Vertices[1]!.Z, facet!.Vertices[2]!.Z }.Max();
+                    maxz = tmaxz > maxz ? tmaxz : maxz;
+                }
+
+                var boundingX = maxx - minx;
+                var boundingY = maxy - miny;
+                var boundingZ = maxz - minz;
+
+                return new BoundingBox(boundingX, boundingY, boundingZ);
+            }
+        }
+
+        public CenterOfMass CenterOfMass
+        {
+            get
+            {
+                var xCenter = 0d;
+                var yCenter = 0d;
+                var zCenter = 0d;
+                foreach (var facet in Facets)
+                {
+                    var v321 = facet!.Vertices[2]!.X * facet!.Vertices[1]!.Y * facet!.Vertices[0]!.Z;
+                    var v231 = facet!.Vertices[1]!.X * facet!.Vertices[2]!.Y * facet!.Vertices[0]!.Z;
+                    var v312 = facet!.Vertices[2]!.X * facet!.Vertices[0]!.Y * facet!.Vertices[1]!.Z;
+                    var v132 = facet!.Vertices[0]!.X * facet!.Vertices[2]!.Y * facet!.Vertices[1]!.Z;
+                    var v213 = facet!.Vertices[1]!.X * facet!.Vertices[0]!.Y * facet!.Vertices[2]!.Z;
+                    var v123 = facet!.Vertices[0]!.X * facet!.Vertices[1]!.Y * facet!.Vertices[2]!.Z;
+
+                    var facetVolume = (1.0 / 6.0) * (-v321 + v231 + v312 - v132 - v213 + v123);
+
+
+                    xCenter += (facet!.Vertices[0]!.X + facet!.Vertices[1]!.X + facet!.Vertices[2]!.X) / 4 * facetVolume;
+                    yCenter += (facet!.Vertices[0]!.Y + facet!.Vertices[1]!.Y + facet!.Vertices[2]!.Y) / 4 * facetVolume;
+                    zCenter += (facet!.Vertices[0]!.Z + facet!.Vertices[1]!.Z + facet!.Vertices[2]!.Z) / 4 * facetVolume;
+                }
+
+                xCenter /= 1000;
+                yCenter /= 1000;
+                zCenter /= 1000;
+
+                return new CenterOfMass(xCenter, yCenter, zCenter);
+            }
         }
 
         /// <summary>Creates a new, empty <see cref="STLDocument"/>.</summary>

@@ -34,6 +34,33 @@ namespace STLDotNet6.Formats.StereoLithography
             vertices.Shift(new Vertex(x, y, z));
         }
 
+        public static Vertex? Sub(this Vertex? target, Vertex? value)
+        {
+            var x = target!.X - value!.X;
+            var y = target!.Y - value!.Y;
+            var z = target!.Z - value!.Z;
+
+            return new Vertex(x, y, z);
+        }
+
+        public static Vertex? Cross(this Vertex? target, Vertex? value)
+        {
+            var x = target!.X;
+            var y = target!.Y;
+            var z = target!.Z;
+
+            var resultX = y * value!.Z - z * value!.Y;
+            var resultY = z * value!.X - x * value!.Z;
+            var resultZ = x * value!.Y - y * value!.X;
+
+            return new Vertex(resultX, resultY, resultZ);
+        }
+
+        public static double Length(this Vertex? target)
+        {
+            return Math.Sqrt(target!.X * target!.X + target!.Y * target!.Y + target!.Z * target!.Z);
+        }
+
         /// <summary>Shifts the <paramref name="vertices"/> enumerable by the X, Y and Z values in the <paramref name="shift"/> parameter.</summary>
         /// <param name="vertices">The vertices to be shifted.</param>
         /// <param name="shift">The amount to shift each vertex.</param>
